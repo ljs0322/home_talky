@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">home talky</string>
+    <string name="Hello_world">Hello world!</string>
+    <string name="action_more1">weather_icon</string>
+    <string name="action_more2">menu item2</string>
+    <string name="action_more3">menu item3</string>
+    <string name="action1">File</string>
+    <string name="action2">weather</string>
+    <string name="action3">save</string>
+    <string name="fc_sns_logo_ment">FC SNS Application</string>
+</resources>

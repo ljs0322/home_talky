@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu  xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.say.App5-1.MainActivity">
+
+    <item
+        android:id="@+id/weather_icon1"
+        android:icon="@drawable/ohh"
+        app:showAsAction="always"
+        android:title="날씨" />
+    <item
+        android:id="@+id/am_weather"
+        android:title="am"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/weather_icon2"
+        android:icon="@drawable/ohh"
+        app:showAsAction="always"
+        android:title="날씨" />
+
+    <item
+        android:id="@+id/pm_weather"
+        android:title="pm"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/Hello_world"
+        android:title="공지"
+        app:showAsAction="always">
+
+    </item>
+
+    <item
+        android:id="@+id/file"
+
+        android:title="저장"
+        app:showAsAction="always">
+
+    </item>
+</menu>
