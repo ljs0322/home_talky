@@ -1,26 +1,32 @@
 package edu.skku.httphumanict.fcsnsprojectver001.app.activity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import edu.skku.httphumanict.fcsnsprojectver001.R;
+import edu.skku.httphumanict.fcsnsprojectver001.app.FCSNSAppManager;
 
 /**
  * Created by say on 2016-08-11.
  */
 public class ListViewAdapter extends BaseAdapter {
 
-    final static FCSNSRoomActivity mainActivity = new FCSNSRoomActivity();
+    //final static FCSNSRoomActivity mainActivity = new FCSNSRoomActivity();
 
     private ArrayList<ListViewItem> listViewItemList = new ArrayList<ListViewItem>();
 
@@ -46,8 +52,6 @@ public class ListViewAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        final int pos = position;
-        int align = 0;
         final Context context = parent.getContext();
 
         if(convertView == null){
@@ -91,6 +95,37 @@ public class ListViewAdapter extends BaseAdapter {
         }
 
 
+        msgTextView.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction()==MotionEvent.ACTION_DOWN){
+                    if(msgTextView.getClass() == v.getClass()){
+                        final FCSNSRoomActivity roomActivity = FCSNSAppManager.getInstance().getRoomActivity();
+
+                        roomActivity.alert.setTitle("대화저장");
+                        roomActivity.alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(roomActivity.getApplicationContext(), "확인 버튼이 눌렸습니다", Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                            }
+                        });
+
+                        roomActivity.alert.setMessage("내용");
+                        roomActivity.alert.show();
+
+                    }
+                }
+                if(event.getAction()==MotionEvent.ACTION_UP){
+                    if(msgTextView.getClass() == v.getClass()){
+                        msgTextView.setTextColor(Color.BLACK);
+                    }
+                }
+
+                return true;
+            }
+        });
 
         return convertView;
     }

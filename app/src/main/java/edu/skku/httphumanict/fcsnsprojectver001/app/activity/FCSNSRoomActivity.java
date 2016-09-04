@@ -1,7 +1,9 @@
 package edu.skku.httphumanict.fcsnsprojectver001.app.activity;
 
+import android.app.AlertDialog;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -33,6 +35,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import edu.skku.httphumanict.fcsnsprojectver001.R;
+import edu.skku.httphumanict.fcsnsprojectver001.app.FCSNSAppManager;
 
 /**
  *
@@ -41,14 +44,13 @@ import edu.skku.httphumanict.fcsnsprojectver001.R;
 public class FCSNSRoomActivity extends AppCompatActivity {
 
     public String data1,data2,data3,data4;
-    public String am_weather = "어떨까";
-    public String pm_weather = "";
+    public String am_weather = "날씨가 이상함";
+    public String pm_weather = "날씨가 이상함";
     public static int chat_bubble = 1;
-    private final String[] navItems = {"Brown", "Cadet Blue", "Dark Olive Green", "Dark Orange", "Golden Rod"};
     private ListView lvNavList;
-    private RelativeLayout flContainer;
+    private RelativeLayout ReContainer;
     private DrawerLayout dlDrawer;
-
+    public AlertDialog.Builder alert;
     @Override
     public void onBackPressed() {
         if (dlDrawer.isDrawerOpen(lvNavList)) {
@@ -62,20 +64,31 @@ public class FCSNSRoomActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room);
+
+        FCSNSAppManager.getInstance().setRoomAcitivity(this);
+
         final ListView listView;
         final ListViewAdapter adapter;
+
         final String state[] ={"바쁨","잠","놈"};
+        alert = new AlertDialog.Builder(FCSNSRoomActivity.this);
+
         adapter = new ListViewAdapter();
         listView = (ListView) findViewById(R.id.listView);
         listView.setAdapter(adapter);
         final ImageView img = (ImageView)findViewById(R.id.imageView);
         final Spinner spin1 = (Spinner)findViewById(R.id.spinner);
-        lvNavList = (ListView)findViewById(R.id.lv_activity_main_nav_list);
-        flContainer = (RelativeLayout)findViewById(R.id.activity_main_container);
+
+        ReContainer = (RelativeLayout)findViewById(R.id.activity_main_container);
 
         dlDrawer = (DrawerLayout)findViewById(R.id.activity_main_drawer);
-        lvNavList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, navItems));
-        lvNavList.setOnItemClickListener(new DrawerItemClickListener());
+        final ArrayList<DrawerItem> dataList = new ArrayList<DrawerItem>();
+        final CustomDrawerAdapter drawerAdapter = new CustomDrawerAdapter(this, R.layout.custom_drawer_item, dataList);
+        lvNavList = (ListView)findViewById(R.id.lv_activity_main_nav_list);
+        lvNavList.setAdapter(drawerAdapter);
+        //lvNavList.setAdapter(new CustomDrawerAdapter(this, R.layout.custom_drawer_item,  dataList));
+        //lvNavList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, navItems ));
+        //lvNavList.setOnItemClickListener(new DrawerItemClickListener());
 
         ArrayAdapter<String> ad = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,state);
         ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -125,14 +138,17 @@ public class FCSNSRoomActivity extends AppCompatActivity {
                         }
                         else if (chat_bubble == 3){
                             adapter.addItem(getResources().getDrawable(R.drawable.icon_512), editText.getText().toString(), 3);
+
                             chat_bubble = 4;
                         }
                         else if (chat_bubble == 4){
                             adapter.addItem(getResources().getDrawable(R.drawable.icon_512), editText.getText().toString(), 4);
                             chat_bubble = 1;
+                            dataList.add(new DrawerItem(editText.getText().toString()));
                         }
 
                         adapter.notifyDataSetChanged();
+                        drawerAdapter.notifyDataSetChanged();
                         listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
                         editText.setText("");
                     }
@@ -142,36 +158,38 @@ public class FCSNSRoomActivity extends AppCompatActivity {
         });
 
         new ReceiveShortWeather().execute();
+
+
     }//end of oncreate
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
 
-        @Override
 
-        public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-            switch (position) {
-                case 0:
-                    flContainer.setBackgroundColor(Color.parseColor("#A52A2A"));
-                    break;
-                case 1:
-                    flContainer.setBackgroundColor(Color.parseColor("#5F9EA0"));
-                    break;
-                case 2:
-                    flContainer.setBackgroundColor(Color.parseColor("#556B2F"));
-                    break;
-                case 3:
-                    flContainer.setBackgroundColor(Color.parseColor("#FF8C00"));
-                    break;
-                case 4:
-                    flContainer.setBackgroundColor(Color.parseColor("#DAA520"));
-                    break;
-            }
-
-            dlDrawer.closeDrawer(lvNavList);
-
-        }
-
-    }
-
+//    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+//
+//        @Override
+//        public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
+//            switch (position) {
+//                case 0:
+//                    ReContainer.setBackgroundColor(Color.parseColor("#A52A2A"));
+//                    break;
+//                case 1:
+//                    ReContainer.setBackgroundColor(Color.parseColor("#5F9EA0"));
+//                    break;
+//                case 2:
+//                    ReContainer.setBackgroundColor(Color.parseColor("#556B2F"));
+//                    break;
+//                case 3:
+//                    ReContainer.setBackgroundColor(Color.parseColor("#FF8C00"));
+//                    break;
+//                case 4:
+//                    ReContainer.setBackgroundColor(Color.parseColor("#DAA520"));
+//                    break;
+//            }
+//
+//            dlDrawer.closeDrawer(lvNavList);
+//
+//        }
+//
+//    }
 
 
     public class ReceiveShortWeather extends AsyncTask<URL, Integer, Long> {
@@ -216,15 +234,6 @@ public class FCSNSRoomActivity extends AppCompatActivity {
                 Log.e("weather_data",pm_weather);
                 invalidateOptionsMenu(); // onPrepareOptionMenu 불러오는 명령어
                 Log.e("Data",data1);Log.e("Data",data2);Log.e("Data",data3);Log.e("Data",data4);
-
-//            for(int i=0; i<shortWeathers.size(); i++) {
-//                data =
-////                        shortWeathers.get(i).getHour() + " " +
-////                        shortWeathers.get(i).getDay() + " " +
-////                        shortWeathers.get(i).getTemp() + " " +
-//                         shortWeathers.get(i).getWfKor() + " ";
-////                        shortWeathers.get(i).getPop() + "\n";
-//            }
 
             }
 
@@ -306,27 +315,27 @@ public class FCSNSRoomActivity extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        if(am_weather.equals("구름 많음")){
+        if(am_weather.equals("구름 많음") || am_weather.equals("구름 조금") ){
             menu.findItem(R.id.weather_icon1).setIcon(R.drawable.cloud);
             menu.findItem(R.id.am_weather).setTitle("오전\n"+data1);
         //Toast.makeText(getApplicationContext(),"날씨 흐림",Toast.LENGTH_SHORT).show();
     }
     else if(am_weather.equals("맑음")){
-        menu.findItem(R.id.weather_icon1).setIcon(R.drawable.sunny);
+            menu.findItem(R.id.weather_icon1).setIcon(R.drawable.sunny);
             menu.findItem(R.id.am_weather).setTitle("오전\n"+data1);
         //Toast.makeText(getApplicationContext(),"날씨 맑음",Toast.LENGTH_SHORT).show();
     }
     else if(am_weather.equals("비")){
-        menu.findItem(R.id.weather_icon1).setIcon(R.drawable.rain);
+            menu.findItem(R.id.weather_icon1).setIcon(R.drawable.rainy);
             menu.findItem(R.id.am_weather).setTitle("오전\n"+data1);
         //Toast.makeText(getApplicationContext(),"비 개옴",Toast.LENGTH_SHORT).show();
     }
     else if(am_weather.equals("흐림")){
-        menu.findItem(R.id.weather_icon1).setIcon(R.drawable.rain);
+            menu.findItem(R.id.weather_icon1).setIcon(R.drawable.cloudy);
             menu.findItem(R.id.am_weather).setTitle("오전\n"+data1);
         //Toast.makeText(getApplicationContext(),"흐림",Toast.LENGTH_SHORT).show();
     }
-        if(pm_weather.equals("구름 많음")){
+        if(pm_weather.equals("구름 많음") || pm_weather.equals("구름 조금")){
             menu.findItem(R.id.weather_icon2).setIcon(R.drawable.cloud);
             menu.findItem(R.id.pm_weather).setTitle("오후\n"+data3);
             //Toast.makeText(getApplicationContext(),"날씨 흐림",Toast.LENGTH_SHORT).show();
@@ -337,12 +346,12 @@ public class FCSNSRoomActivity extends AppCompatActivity {
             //Toast.makeText(getApplicationContext(),"날씨 맑음",Toast.LENGTH_SHORT).show();
         }
         else if(pm_weather.equals("비")){
-            menu.findItem(R.id.weather_icon2).setIcon(R.drawable.rain);
+            menu.findItem(R.id.weather_icon2).setIcon(R.drawable.rainy);
             menu.findItem(R.id.pm_weather).setTitle("오후\n"+data3);
            // Toast.makeText(getApplicationContext(),"비 개옴",Toast.LENGTH_SHORT).show();
         }
         else if(pm_weather.equals("흐림")){
-            menu.findItem(R.id.weather_icon2).setIcon(R.drawable.rain);
+            menu.findItem(R.id.weather_icon2).setIcon(R.drawable.cloudy);
             menu.findItem(R.id.pm_weather).setTitle("오후\n"+data3);
             //Toast.makeText(getApplicationContext(),"흐림",Toast.LENGTH_SHORT).show();
         }
@@ -359,12 +368,12 @@ public class FCSNSRoomActivity extends AppCompatActivity {
         switch (id){
             case R.id.Hello_world: // "저장" == item.getTitle()
                 Toast.makeText(getApplicationContext(),"open",Toast.LENGTH_SHORT).show();
-                dlDrawer.openDrawer(lvNavList);
+
                 return true;
+
             case R.id.file:
                 Toast.makeText(getApplicationContext(),"저장",Toast.LENGTH_SHORT).show();
-                //weather = "맑음";
-                //invalidateOptionsMenu();
+                dlDrawer.openDrawer(lvNavList);
                 return true;
         }
 

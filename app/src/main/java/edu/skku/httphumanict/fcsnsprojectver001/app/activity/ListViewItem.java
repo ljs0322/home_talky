@@ -7,9 +7,11 @@ import android.graphics.drawable.Drawable;
  * Created by say on 2016-08-11.
  */
 public class ListViewItem {
+
     private Drawable iconDrawable;
     private String titleStr;
     private int isMyMsg;
+
 
     public void setIcon(Drawable icon){
         iconDrawable =icon;
