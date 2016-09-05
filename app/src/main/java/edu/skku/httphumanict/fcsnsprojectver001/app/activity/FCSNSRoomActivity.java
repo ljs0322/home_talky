@@ -2,8 +2,10 @@ package edu.skku.httphumanict.fcsnsprojectver001.app.activity;
 
 import android.app.AlertDialog;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -47,10 +49,13 @@ public class FCSNSRoomActivity extends AppCompatActivity {
     public String am_weather = "날씨가 이상함";
     public String pm_weather = "날씨가 이상함";
     public static int chat_bubble = 1;
-    private ListView lvNavList;
+    public ListView lvNavList;
     private RelativeLayout ReContainer;
     private DrawerLayout dlDrawer;
     public AlertDialog.Builder alert;
+    public ArrayList<DrawerItem> dataList;
+    public CustomDrawerAdapter drawerAdapter;
+
     @Override
     public void onBackPressed() {
         if (dlDrawer.isDrawerOpen(lvNavList)) {
@@ -82,19 +87,24 @@ public class FCSNSRoomActivity extends AppCompatActivity {
         ReContainer = (RelativeLayout)findViewById(R.id.activity_main_container);
 
         dlDrawer = (DrawerLayout)findViewById(R.id.activity_main_drawer);
-        final ArrayList<DrawerItem> dataList = new ArrayList<DrawerItem>();
-        final CustomDrawerAdapter drawerAdapter = new CustomDrawerAdapter(this, R.layout.custom_drawer_item, dataList);
+        dataList = new ArrayList<DrawerItem>();
+        drawerAdapter = new CustomDrawerAdapter(this, R.layout.custom_drawer_item, dataList);
         lvNavList = (ListView)findViewById(R.id.lv_activity_main_nav_list);
         lvNavList.setAdapter(drawerAdapter);
-        //lvNavList.setAdapter(new CustomDrawerAdapter(this, R.layout.custom_drawer_item,  dataList));
-        //lvNavList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, navItems ));
-        //lvNavList.setOnItemClickListener(new DrawerItemClickListener());
 
         ArrayAdapter<String> ad = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,state);
         ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spin1.setAdapter(ad);
 
+
+        final ImageView view1 = (ImageView)findViewById(R.id.animation_view);
+        view1.setBackgroundResource(R.drawable.animation_bg);
+        AnimationDrawable animation= (AnimationDrawable) view1.getBackground();
+        animation.start();
+
+
         spin1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -144,11 +154,9 @@ public class FCSNSRoomActivity extends AppCompatActivity {
                         else if (chat_bubble == 4){
                             adapter.addItem(getResources().getDrawable(R.drawable.icon_512), editText.getText().toString(), 4);
                             chat_bubble = 1;
-                            dataList.add(new DrawerItem(editText.getText().toString()));
-                        }
 
+                        }
                         adapter.notifyDataSetChanged();
-                        drawerAdapter.notifyDataSetChanged();
                         listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
                         editText.setText("");
                     }

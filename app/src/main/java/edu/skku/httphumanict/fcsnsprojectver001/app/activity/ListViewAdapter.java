@@ -103,23 +103,26 @@ public class ListViewAdapter extends BaseAdapter {
                     if(msgTextView.getClass() == v.getClass()){
                         final FCSNSRoomActivity roomActivity = FCSNSAppManager.getInstance().getRoomActivity();
 
-                        roomActivity.alert.setTitle("대화저장");
+                        roomActivity.alert.setTitle("대화를 저장하시겠습니까?");
                         roomActivity.alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(roomActivity.getApplicationContext(), "확인 버튼이 눌렸습니다", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(roomActivity.getApplicationContext(), "저장되었습니다.", Toast.LENGTH_SHORT).show();
+                                roomActivity.dataList.add(new DrawerItem(msgTextView.getText().toString()));
+                                roomActivity.drawerAdapter.notifyDataSetChanged();
                                 dialog.dismiss();
+                            }
+                        }).setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                return;
                             }
                         });
 
-                        roomActivity.alert.setMessage("내용");
+                        roomActivity.alert.setMessage(msgTextView.getText().toString());
                         roomActivity.alert.show();
 
-                    }
-                }
-                if(event.getAction()==MotionEvent.ACTION_UP){
-                    if(msgTextView.getClass() == v.getClass()){
-                        msgTextView.setTextColor(Color.BLACK);
                     }
                 }
 
@@ -127,8 +130,54 @@ public class ListViewAdapter extends BaseAdapter {
             }
         });
 
+        msgTextView2.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                if(event.getAction()==MotionEvent.ACTION_DOWN){
+                    if(msgTextView2.getClass() == v.getClass()){
+                        final FCSNSRoomActivity roomActivity = FCSNSAppManager.getInstance().getRoomActivity();
+
+                        roomActivity.alert.setTitle("아래 대화를 저장하시겠습니까?");
+                        roomActivity.alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(roomActivity.getApplicationContext(), "저장되었습니다.", Toast.LENGTH_SHORT).show();
+                                roomActivity.dataList.add(new DrawerItem(msgTextView2.getText().toString()));
+                                roomActivity.drawerAdapter.notifyDataSetChanged();
+                                dialog.dismiss();
+                            }
+                        }).setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                return;
+                            }
+                        });
+
+                        roomActivity.alert.setMessage(msgTextView2.getText().toString());
+                        roomActivity.alert.show();
+                    }
+                }
+                return true;
+            }
+        });
+
+
+
+
+
+
+
         return convertView;
     }
+
+
+
+
+
+
+
 
     public void addItem(Drawable icon, String title, int _bIsMyMsg){
         ListViewItem item =new ListViewItem();
