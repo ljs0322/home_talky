@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
  */
 public class ListViewItem {
 
+    private Drawable emoticonDrawable;
     private Drawable iconDrawable;
     private String titleStr;
     private int isMyMsg;
@@ -17,8 +18,14 @@ public class ListViewItem {
         iconDrawable =icon;
     }
 
+    public void setEmoticon(Drawable icon){
+        emoticonDrawable =icon;
+    }
     public void setTitle(String title){
         titleStr =title;
+    }
+    public Drawable getEmoticon(){
+        return  this.emoticonDrawable;
     }
 
     public Drawable getIcon(){

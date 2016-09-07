@@ -25,10 +25,11 @@ import edu.skku.httphumanict.fcsnsprojectver001.app.FCSNSAppManager;
  * Created by say on 2016-08-11.
  */
 public class ListViewAdapter extends BaseAdapter {
-
+    public boolean emoticon_value = false;
     //final static FCSNSRoomActivity mainActivity = new FCSNSRoomActivity();
 
     private ArrayList<ListViewItem> listViewItemList = new ArrayList<ListViewItem>();
+
 
     public ListViewAdapter(){
 
@@ -63,35 +64,86 @@ public class ListViewAdapter extends BaseAdapter {
         final TextView msgTextView = (TextView) convertView.findViewById(R.id.chat_text1);
         final ImageView iconImageView2 = (ImageView) convertView.findViewById(R.id.chat_imamge2);
         final TextView msgTextView2 = (TextView) convertView.findViewById(R.id.chat_text2);
+        final ImageView emoticonImage1 = (ImageView) convertView.findViewById(R.id.emoticon_image1);
+        final ImageView emoticonImage2 = (ImageView) convertView.findViewById(R.id.emoticon_image2);
         final ListViewItem listViewItem = listViewItemList.get(position);
 
         iconImageView.setImageDrawable(listViewItem.getIcon());
         iconImageView2.setImageDrawable(listViewItem.getIcon());
         msgTextView.setText(listViewItem.getTitle());
         msgTextView2.setText(listViewItem.getTitle());
+        emoticonImage1.setImageDrawable(listViewItem.getEmoticon());
+        emoticonImage2.setImageDrawable(listViewItem.getEmoticon());
 
         msgTextView.setBackgroundResource(R.drawable.l_talk);
         msgTextView2.setBackgroundResource(R.drawable.r_talk);
 
         LinearLayout chatMessageContainer = (LinearLayout) convertView.findViewById(R.id.list_layout1);
         LinearLayout chatMessageContainer2 = (LinearLayout) convertView.findViewById(R.id.list_layout2);
+        LinearLayout chatMessageContainer3 = (LinearLayout) convertView.findViewById(R.id.list_layout3);
+        LinearLayout chatMessageContainer4 = (LinearLayout) convertView.findViewById(R.id.list_layout4);
+        LinearLayout chatMessageContainer5 = (LinearLayout) convertView.findViewById(R.id.list_layout5);
+        LinearLayout chatMessageContainer6 = (LinearLayout) convertView.findViewById(R.id.list_layout6);
+
         if(listViewItem.isMyMsg() == 1){
             // 내 메세지인 경우
-            chatMessageContainer.setVisibility(View.VISIBLE);
-            chatMessageContainer2.setVisibility(View.INVISIBLE);
+//                chatMessageContainer.setVisibility(View.VISIBLE);
+//                chatMessageContainer2.setVisibility(View.INVISIBLE);
+            if(emoticon_value == true){// 이모티콘일떄
+                chatMessageContainer.setVisibility(View.VISIBLE);
+                chatMessageContainer2.setVisibility(View.INVISIBLE);
+                chatMessageContainer3.setVisibility(View.INVISIBLE);
+                chatMessageContainer4.setVisibility(View.INVISIBLE);
+                chatMessageContainer5.setVisibility(View.VISIBLE);
+                chatMessageContainer6.setVisibility(View.INVISIBLE);
+            }
+            else{
+                chatMessageContainer.setVisibility(View.VISIBLE);
+                chatMessageContainer2.setVisibility(View.INVISIBLE);
+                chatMessageContainer3.setVisibility(View.VISIBLE);
+                chatMessageContainer4.setVisibility(View.INVISIBLE);
+                chatMessageContainer5.setVisibility(View.INVISIBLE);
+                chatMessageContainer6.setVisibility(View.INVISIBLE);
+            }
+
         } else if(listViewItem.isMyMsg() == 2) {
             // 상대방 메세지인 경우
-            chatMessageContainer.setVisibility(View.INVISIBLE);
-            chatMessageContainer2.setVisibility(View.VISIBLE);
+//            chatMessageContainer.setVisibility(View.INVISIBLE);
+//            chatMessageContainer2.setVisibility(View.VISIBLE);
+            if(emoticon_value == true){// 이모티콘일떄
+                chatMessageContainer.setVisibility(View.INVISIBLE);
+                chatMessageContainer2.setVisibility(View.VISIBLE);
+                chatMessageContainer3.setVisibility(View.INVISIBLE);
+                chatMessageContainer4.setVisibility(View.INVISIBLE);
+                chatMessageContainer5.setVisibility(View.INVISIBLE);
+                chatMessageContainer6.setVisibility(View.VISIBLE);
+            }
+            else{
+                chatMessageContainer.setVisibility(View.INVISIBLE);
+                chatMessageContainer2.setVisibility(View.VISIBLE);
+                chatMessageContainer3.setVisibility(View.INVISIBLE);
+                chatMessageContainer4.setVisibility(View.VISIBLE);
+                chatMessageContainer5.setVisibility(View.INVISIBLE);
+                chatMessageContainer6.setVisibility(View.INVISIBLE);
+            }
+
         }else if(listViewItem.isMyMsg() == 3){
             msgTextView2.setBackgroundResource(R.drawable.notice); // 공지
             chatMessageContainer.setVisibility(View.INVISIBLE);
             chatMessageContainer2.setVisibility(View.VISIBLE);
+            chatMessageContainer3.setVisibility(View.INVISIBLE);
+            chatMessageContainer4.setVisibility(View.VISIBLE);
+            chatMessageContainer5.setVisibility(View.INVISIBLE);
+            chatMessageContainer6.setVisibility(View.INVISIBLE);
         }
         else if(listViewItem.isMyMsg() == 4){
             msgTextView2.setBackgroundResource(R.drawable.n_talk); // 어두운 배경 공지
             chatMessageContainer.setVisibility(View.INVISIBLE);
             chatMessageContainer2.setVisibility(View.VISIBLE);
+            chatMessageContainer3.setVisibility(View.INVISIBLE);
+            chatMessageContainer4.setVisibility(View.VISIBLE);
+            chatMessageContainer5.setVisibility(View.INVISIBLE);
+            chatMessageContainer6.setVisibility(View.INVISIBLE);
         }
 
 
@@ -165,19 +217,19 @@ public class ListViewAdapter extends BaseAdapter {
 
 
 
-
-
-
-
         return convertView;
     }
 
 
+    public void add_emoticon(Drawable icon, Drawable emoticon,int _bisMyMsg){
+        ListViewItem item = new ListViewItem();
+        emoticon_value = true;
+        item.setIcon(icon);
+        item.setEmoticon(emoticon);
+        item.setIsMyMsg(_bisMyMsg);
 
-
-
-
-
+        listViewItemList.add(item);
+    }
 
     public void addItem(Drawable icon, String title, int _bIsMyMsg){
         ListViewItem item =new ListViewItem();
@@ -188,6 +240,5 @@ public class ListViewAdapter extends BaseAdapter {
 
         listViewItemList.add(item);
     }
-
 
 }

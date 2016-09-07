@@ -12,6 +12,15 @@
         android:layout_height="wrap_content"
         android:id="@+id/animation_view"
         android:background="@drawable/p1" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/animation_view2"
+        android:background="@drawable/n_1"
+        android:visibility="gone"/>
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -22,7 +31,7 @@
         android:id="@+id/activity_main_container">
 
 
-    <ListView
+        <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/listView"
@@ -30,28 +39,39 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:divider="#000000"
-        android:layout_above="@+id/editText"/>
+        android:layout_above="@+id/linearLayout2"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="전송"
-        android:id="@+id/button"
-        android:layout_alignTop="@+id/editText"
-        android:layout_alignRight="@+id/listView"
-        android:layout_alignEnd="@+id/listView"
-        android:layout_above="@+id/linearLayout1"/>
+<LinearLayout
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/linearLayout2"
+    android:layout_above="@+id/linearLayout1"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true">
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/editText"
         android:maxLines="4"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@id/button"
-        android:layout_above="@+id/linearLayout1"/>
+        android:layout_weight="50" />
 
+    <Spinner
+            android:layout_width="20dp"
+            android:layout_height="30dp"
+            android:background="@drawable/busy"
+            android:id="@+id/emoticon"
+            android:layout_weight="1" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="전송"
+        android:id="@+id/button"
+        android:layout_weight="1" />
+
+</LinearLayout>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -141,6 +161,7 @@
             android:textAlignment="center"
             android:src="@drawable/status_son_head"/>
     </LinearLayout>
+
 
     </RelativeLayout>
 

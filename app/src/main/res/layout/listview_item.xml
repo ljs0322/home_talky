@@ -18,16 +18,8 @@
             android:layout_height="50dp"
             android:id="@+id/chat_imamge1"
             android:src="@drawable/quest_btn_off"
-            android:layout_gravity="left"
-            />
+            android:layout_gravity="left"   />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="New Text "
-            android:id="@+id/chat_text1"
-            android:textSize="20sp"
-            />
     </LinearLayout>
 
     <LinearLayout
@@ -41,23 +33,91 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentEnd="true">
 
+
+        <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/chat_imamge2"
+        android:src="@drawable/quest_btn_off"
+        android:layout_gravity="right"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/list_layout3"
+        android:gravity="left"
+        android:layout_gravity="left"
+        android:layout_alignTop="@+id/list_layout1"
+        android:layout_toRightOf="@+id/list_layout1"
+        android:layout_toEndOf="@+id/list_layout1">
+
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New Text"
+            android:text="llllllllllllllllllllll"
+            android:id="@+id/chat_text1"
+            android:textSize="20sp"     />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/list_layout4"
+        android:layout_alignTop="@+id/list_layout2"
+        android:layout_toLeftOf="@+id/list_layout2"
+        android:layout_toStartOf="@+id/list_layout2">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="RRRRRRRRRR"
             android:id="@+id/chat_text2"
             android:textSize="20dp"
-            android:layout_marginLeft="50dp"
-            />
+            android:layout_toLeftOf="@+id/list_layout2"
+            android:layout_toStartOf="@+id/list_layout2" />
+    </LinearLayout>
 
+    <LinearLayout
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/list_layout5"
+    android:gravity="left"
+    android:layout_gravity="left"
+        android:layout_alignTop="@+id/list_layout1"
+        android:layout_toRightOf="@+id/list_layout1"
+        android:layout_toEndOf="@+id/list_layout1">
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:id="@+id/chat_imamge2"
-            android:src="@drawable/quest_btn_off"
-            android:layout_gravity="right"
-            />
-
+            android:id="@+id/emoticon_image1"
+            android:src="@drawable/quest_btn_on"
+            android:layout_gravity="left"
+            android:layout_alignTop="@+id/list_layout1"
+            android:layout_toRightOf="@+id/list_layout1"
+            android:layout_toEndOf="@+id/list_layout1" />
     </LinearLayout>
+
+    <LinearLayout
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/list_layout6"
+        android:layout_alignTop="@+id/list_layout4"
+        android:layout_alignRight="@+id/list_layout4"
+        android:layout_alignEnd="@+id/list_layout4">
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/emoticon_image2"
+            android:src="@drawable/quest_btn_on"
+            android:layout_gravity="right" />
+    </LinearLayout>
+
 
 </RelativeLayout>

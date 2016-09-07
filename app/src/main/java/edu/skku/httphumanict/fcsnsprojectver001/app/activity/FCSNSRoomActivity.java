@@ -8,6 +8,8 @@ import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -55,6 +57,10 @@ public class FCSNSRoomActivity extends AppCompatActivity {
     public AlertDialog.Builder alert;
     public ArrayList<DrawerItem> dataList;
     public CustomDrawerAdapter drawerAdapter;
+    public int cnt = 0;
+    public int bg_cnt = 0;
+    public boolean bg_type = true;
+    public ImageView view1;
 
     @Override
     public void onBackPressed() {
@@ -75,7 +81,8 @@ public class FCSNSRoomActivity extends AppCompatActivity {
         final ListView listView;
         final ListViewAdapter adapter;
 
-        final String state[] ={"바쁨","잠","놈"};
+        final String state[] ={"운동중","식사중","이동중","회의중"};
+        final String state1[] ={"진황이형","지연누나"};
         alert = new AlertDialog.Builder(FCSNSRoomActivity.this);
 
         adapter = new ListViewAdapter();
@@ -83,6 +90,7 @@ public class FCSNSRoomActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
         final ImageView img = (ImageView)findViewById(R.id.imageView);
         final Spinner spin1 = (Spinner)findViewById(R.id.spinner);
+        final Spinner emoticon_sp = (Spinner)findViewById(R.id.emoticon);
 
         ReContainer = (RelativeLayout)findViewById(R.id.activity_main_container);
 
@@ -92,30 +100,29 @@ public class FCSNSRoomActivity extends AppCompatActivity {
         lvNavList = (ListView)findViewById(R.id.lv_activity_main_nav_list);
         lvNavList.setAdapter(drawerAdapter);
 
+
+
+
+        view1 = (ImageView)findViewById(R.id.animation_view);
+//        view1.setBackgroundResource(R.drawable.animation_bg);
+//        animation = (AnimationDrawable) view1.getBackground();
+//        animation.start();
+
         ArrayAdapter<String> ad = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,state);
         ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spin1.setAdapter(ad);
 
-
-        final ImageView view1 = (ImageView)findViewById(R.id.animation_view);
-        view1.setBackgroundResource(R.drawable.animation_bg);
-        AnimationDrawable animation= (AnimationDrawable) view1.getBackground();
-        animation.start();
-
-
         spin1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String str_state = spin1.getSelectedItem().toString();
-                if (str_state.equals("바쁨")) {
+                if (str_state.equals("운동중")) {
                     BitmapDrawable img_state = (BitmapDrawable) getResources().getDrawable(R.drawable.busy);
                     img.setImageDrawable(img_state);
-                } else if (str_state.equals("놈")) {
+                } else if (str_state.equals("회의중")) {
                     BitmapDrawable img_state = (BitmapDrawable) getResources().getDrawable(R.drawable.play);
                     img.setImageDrawable(img_state);
-                } else if (str_state.equals("잠")) {
+                } else if (str_state.equals("이동중")) {
                     BitmapDrawable img_state = (BitmapDrawable) getResources().getDrawable(R.drawable.sleep);
                     img.setImageDrawable(img_state);
                 }
@@ -124,6 +131,28 @@ public class FCSNSRoomActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
+            }
+        });
+
+        ArrayAdapter<String> emoticon = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,state1);
+        emoticon.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        emoticon_sp.setAdapter(emoticon);
+
+        emoticon_sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String str_state = emoticon_sp.getSelectedItem().toString();
+                if (str_state.equals("진황이형")) {
+                    adapter.add_emoticon(getResources().getDrawable(R.drawable.status_mom_head),getResources().getDrawable(R.drawable.jh_1),1);
+                } else if (str_state.equals("지연누나")) {
+                    adapter.add_emoticon(getResources().getDrawable(R.drawable.status_dad_head),getResources().getDrawable(R.drawable.jy_1),2);
+                }
+                str_state = "";
+
+                adapter.notifyDataSetChanged();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
             }
         });
 
@@ -136,23 +165,29 @@ public class FCSNSRoomActivity extends AppCompatActivity {
                 EditText editText =(EditText)findViewById(R.id.editText);
                 if(v.getId() == R.id.button){
                     if (editText.getText().length() != 0) {
+                        bg_type = true;
+                        bg_cnt = 0;
 
                         if(chat_bubble == 1){
-                            adapter.addItem(getResources().getDrawable(R.drawable.quest_charater), editText.getText().toString(), 1);
+                            adapter.addItem(getResources().getDrawable(R.drawable.status_mom_head), editText.getText().toString(), 1);
+                            adapter.emoticon_value = false;
                             chat_bubble = 2;
                         }
 
                         else if (chat_bubble == 2){
-                            adapter.addItem(getResources().getDrawable(R.drawable.quest_btn_off), editText.getText().toString(), 2);
+                            adapter.addItem(getResources().getDrawable(R.drawable.status_dad_head), editText.getText().toString(), 2);
+                            adapter.emoticon_value = false;
                             chat_bubble = 3;
                         }
                         else if (chat_bubble == 3){
                             adapter.addItem(getResources().getDrawable(R.drawable.icon_512), editText.getText().toString(), 3);
+                            adapter.emoticon_value = false;
 
                             chat_bubble = 4;
                         }
                         else if (chat_bubble == 4){
                             adapter.addItem(getResources().getDrawable(R.drawable.icon_512), editText.getText().toString(), 4);
+                            adapter.emoticon_value = false;
                             chat_bubble = 1;
 
                         }
@@ -167,9 +202,83 @@ public class FCSNSRoomActivity extends AppCompatActivity {
 
         new ReceiveShortWeather().execute();
 
-
     }//end of oncreate
 
+    Handler handler =new Handler(){
+        @Override
+        public void handleMessage(Message msg){
+            updateThread();
+        }
+    };
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        Thread bgCntThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true){
+                    try{
+                        bg_cnt++;
+                        if(bg_cnt == 10){
+                            bg_type = false;
+                            cnt = 0;
+                        }
+                        Thread.sleep(1000);
+                    }catch (Throwable t){
+
+                    }
+                }
+            }
+        });
+        bgCntThread.start();
+
+        Thread myThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true){
+                    try{
+                        handler.sendMessage(handler.obtainMessage());
+                        Thread.sleep(500);
+                    }catch (Throwable t){
+
+                    }
+                }
+            }
+        });
+        myThread.start();
+    }
+
+    private void updateThread() {
+
+        int mod = cnt;
+        cnt++;
+        if(bg_type) {
+            switch (mod) {
+                case 0: view1.setBackgroundResource(R.drawable.p1);  break;
+                case 1: view1.setBackgroundResource(R.drawable.p2);  break;
+                case 2: view1.setBackgroundResource(R.drawable.p3);  break;
+                case 3: view1.setBackgroundResource(R.drawable.p4);  break;
+                case 4: view1.setBackgroundResource(R.drawable.p5);  break;
+                case 5: view1.setBackgroundResource(R.drawable.p6);  break;
+                case 6: view1.setBackgroundResource(R.drawable.p7);  break;
+                case 7: view1.setBackgroundResource(R.drawable.p8);  break;
+                case 8: view1.setBackgroundResource(R.drawable.p9);  break;
+                case 9: view1.setBackgroundResource(R.drawable.p10);  cnt = 0;  break;
+            }
+        }else{
+            switch (mod) {
+                case 0: view1.setBackgroundResource(R.drawable.n_1);  break;
+                case 1: view1.setBackgroundResource(R.drawable.n_2);  break;
+                case 2: view1.setBackgroundResource(R.drawable.n_3);  break;
+                case 3: view1.setBackgroundResource(R.drawable.n_4);  break;
+                case 4: view1.setBackgroundResource(R.drawable.n_5);  cnt = 0;  break;
+            }
+        }
+
+
+    }
 
 //    private class DrawerItemClickListener implements ListView.OnItemClickListener {
 //
@@ -199,21 +308,14 @@ public class FCSNSRoomActivity extends AppCompatActivity {
 //
 //    }
 
-
     public class ReceiveShortWeather extends AsyncTask<URL, Integer, Long> {
-
             ArrayList<Weather> shortWeathers = new ArrayList<Weather>();
-
             protected Long doInBackground(URL... urls) {
-
                 String url = "http://www.kma.go.kr/wid/queryDFSRSS.jsp?zone=1159068000";
-
                 OkHttpClient client = new OkHttpClient();
-
                 Request request = new Request.Builder()
                         .url(url)
                         .build();
-
                 Response response = null;
 
                 try {
