@@ -87,47 +87,25 @@ public class ListViewAdapter extends BaseAdapter {
 
         if(listViewItem.isMyMsg() == 1){
             // 내 메세지인 경우
-//                chatMessageContainer.setVisibility(View.VISIBLE);
-//                chatMessageContainer2.setVisibility(View.INVISIBLE);
-            if(emoticon_value == true){// 이모티콘일떄
-                chatMessageContainer.setVisibility(View.VISIBLE);
-                chatMessageContainer2.setVisibility(View.INVISIBLE);
-                chatMessageContainer3.setVisibility(View.INVISIBLE);
-                chatMessageContainer4.setVisibility(View.INVISIBLE);
-                chatMessageContainer5.setVisibility(View.VISIBLE);
-                chatMessageContainer6.setVisibility(View.INVISIBLE);
-            }
-            else{
                 chatMessageContainer.setVisibility(View.VISIBLE);
                 chatMessageContainer2.setVisibility(View.INVISIBLE);
                 chatMessageContainer3.setVisibility(View.VISIBLE);
                 chatMessageContainer4.setVisibility(View.INVISIBLE);
                 chatMessageContainer5.setVisibility(View.INVISIBLE);
                 chatMessageContainer6.setVisibility(View.INVISIBLE);
-            }
 
-        } else if(listViewItem.isMyMsg() == 2) {
+        }
+            else if(listViewItem.isMyMsg() == 2) {
             // 상대방 메세지인 경우
-//            chatMessageContainer.setVisibility(View.INVISIBLE);
-//            chatMessageContainer2.setVisibility(View.VISIBLE);
-            if(emoticon_value == true){// 이모티콘일떄
-                chatMessageContainer.setVisibility(View.INVISIBLE);
-                chatMessageContainer2.setVisibility(View.VISIBLE);
-                chatMessageContainer3.setVisibility(View.INVISIBLE);
-                chatMessageContainer4.setVisibility(View.INVISIBLE);
-                chatMessageContainer5.setVisibility(View.INVISIBLE);
-                chatMessageContainer6.setVisibility(View.VISIBLE);
-            }
-            else{
                 chatMessageContainer.setVisibility(View.INVISIBLE);
                 chatMessageContainer2.setVisibility(View.VISIBLE);
                 chatMessageContainer3.setVisibility(View.INVISIBLE);
                 chatMessageContainer4.setVisibility(View.VISIBLE);
                 chatMessageContainer5.setVisibility(View.INVISIBLE);
                 chatMessageContainer6.setVisibility(View.INVISIBLE);
-            }
 
-        }else if(listViewItem.isMyMsg() == 3){
+        }
+        else if(listViewItem.isMyMsg() == 3){
             msgTextView2.setBackgroundResource(R.drawable.notice); // 공지
             chatMessageContainer.setVisibility(View.INVISIBLE);
             chatMessageContainer2.setVisibility(View.VISIBLE);
@@ -144,6 +122,22 @@ public class ListViewAdapter extends BaseAdapter {
             chatMessageContainer4.setVisibility(View.VISIBLE);
             chatMessageContainer5.setVisibility(View.INVISIBLE);
             chatMessageContainer6.setVisibility(View.INVISIBLE);
+        }
+        else if(listViewItem.isMyMsg() == 5){
+            chatMessageContainer.setVisibility(View.VISIBLE);
+            chatMessageContainer2.setVisibility(View.INVISIBLE);
+            chatMessageContainer3.setVisibility(View.INVISIBLE);
+            chatMessageContainer4.setVisibility(View.INVISIBLE);
+            chatMessageContainer5.setVisibility(View.VISIBLE);
+            chatMessageContainer6.setVisibility(View.INVISIBLE);
+        }
+        else if(listViewItem.isMyMsg() == 6){
+            chatMessageContainer.setVisibility(View.INVISIBLE);
+            chatMessageContainer2.setVisibility(View.VISIBLE);
+            chatMessageContainer3.setVisibility(View.INVISIBLE);
+            chatMessageContainer4.setVisibility(View.INVISIBLE);
+            chatMessageContainer5.setVisibility(View.INVISIBLE);
+            chatMessageContainer6.setVisibility(View.VISIBLE);
         }
 
 
@@ -223,7 +217,6 @@ public class ListViewAdapter extends BaseAdapter {
 
     public void add_emoticon(Drawable icon, Drawable emoticon,int _bisMyMsg){
         ListViewItem item = new ListViewItem();
-        emoticon_value = true;
         item.setIcon(icon);
         item.setEmoticon(emoticon);
         item.setIsMyMsg(_bisMyMsg);

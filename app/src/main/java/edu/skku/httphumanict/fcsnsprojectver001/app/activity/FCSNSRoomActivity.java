@@ -143,9 +143,9 @@ public class FCSNSRoomActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String str_state = emoticon_sp.getSelectedItem().toString();
                 if (str_state.equals("진황이형")) {
-                    adapter.add_emoticon(getResources().getDrawable(R.drawable.status_mom_head),getResources().getDrawable(R.drawable.jh_1),1);
+                    adapter.add_emoticon(getResources().getDrawable(R.drawable.status_mom_head),getResources().getDrawable(R.drawable.jh_1),5);
                 } else if (str_state.equals("지연누나")) {
-                    adapter.add_emoticon(getResources().getDrawable(R.drawable.status_dad_head),getResources().getDrawable(R.drawable.jy_1),2);
+                    adapter.add_emoticon(getResources().getDrawable(R.drawable.status_dad_head),getResources().getDrawable(R.drawable.jy_1),6);
                 }
                 str_state = "";
 
@@ -165,29 +165,24 @@ public class FCSNSRoomActivity extends AppCompatActivity {
                 EditText editText =(EditText)findViewById(R.id.editText);
                 if(v.getId() == R.id.button){
                     if (editText.getText().length() != 0) {
-                        bg_type = true;
                         bg_cnt = 0;
-
                         if(chat_bubble == 1){
                             adapter.addItem(getResources().getDrawable(R.drawable.status_mom_head), editText.getText().toString(), 1);
-                            adapter.emoticon_value = false;
+                            bg_type = true;
                             chat_bubble = 2;
                         }
 
                         else if (chat_bubble == 2){
                             adapter.addItem(getResources().getDrawable(R.drawable.status_dad_head), editText.getText().toString(), 2);
-                            adapter.emoticon_value = false;
+                            bg_type = true;
                             chat_bubble = 3;
                         }
                         else if (chat_bubble == 3){
                             adapter.addItem(getResources().getDrawable(R.drawable.icon_512), editText.getText().toString(), 3);
-                            adapter.emoticon_value = false;
-
                             chat_bubble = 4;
                         }
                         else if (chat_bubble == 4){
                             adapter.addItem(getResources().getDrawable(R.drawable.icon_512), editText.getText().toString(), 4);
-                            adapter.emoticon_value = false;
                             chat_bubble = 1;
 
                         }
@@ -240,7 +235,7 @@ public class FCSNSRoomActivity extends AppCompatActivity {
                 while (true){
                     try{
                         handler.sendMessage(handler.obtainMessage());
-                        Thread.sleep(500);
+                        Thread.sleep(1000);
                     }catch (Throwable t){
 
                     }
