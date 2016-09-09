@@ -7,10 +7,12 @@
     tools:context=".app.activity.FCSNSRoomActivity"
 
     android:id="@+id/activity_main_drawer">
+
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:id="@+id/animation_view"
+        android:scaleType="fitCenter"
         android:background="@drawable/p1" />
 
     <ImageView
@@ -19,7 +21,6 @@
         android:id="@+id/animation_view2"
         android:background="@drawable/n_1"
         android:visibility="gone"/>
-
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -40,6 +41,7 @@
         android:layout_alignParentStart="true"
         android:divider="#000000"
         android:layout_above="@+id/linearLayout2"/>
+
 
 <LinearLayout
     android:orientation="horizontal"
@@ -133,7 +135,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:id="@+id/imageView"
-            android:src="@drawable/status_mom_head"
+            android:src="@drawable/status_dad_head"
             android:layout_weight="1"
             android:textAlignment="center"      />
 
@@ -143,7 +145,7 @@
             android:id="@+id/imageView2"
             android:layout_weight="1"
             android:textAlignment="center"
-            android:src="@drawable/status_dad_head"/>
+            android:src="@drawable/status_mom_head"/>
 
         <ImageView
             android:layout_width="40dp"
@@ -175,6 +177,17 @@
     android:divider="@android:color/transparent"
     android:dividerHeight="0dp">
    </ListView>
+
+    <ListView
+        android:id="@+id/notice_listview"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="#EDEDED"
+        android:choiceMode="singleChoice"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp">
+    </ListView>
 
 
 </android.support.v4.widget.DrawerLayout>

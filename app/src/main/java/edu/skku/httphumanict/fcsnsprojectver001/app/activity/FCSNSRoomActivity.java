@@ -17,6 +17,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -26,6 +28,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -52,21 +55,28 @@ public class FCSNSRoomActivity extends AppCompatActivity {
     public String pm_weather = "날씨가 이상함";
     public static int chat_bubble = 1;
     public ListView lvNavList;
+    public ListView notice_drawer;
     private RelativeLayout ReContainer;
     private DrawerLayout dlDrawer;
     public AlertDialog.Builder alert;
     public ArrayList<DrawerItem> dataList;
+    public ArrayList<noticeItem> noticeList;
     public CustomDrawerAdapter drawerAdapter;
+    public CustomDrawerAdapter2 drawerAdapter2;
     public int cnt = 0;
     public int bg_cnt = 0;
     public boolean bg_type = true;
     public ImageView view1;
+    public ViewFlipper flipper;
 
     @Override
     public void onBackPressed() {
         if (dlDrawer.isDrawerOpen(lvNavList)) {
             dlDrawer.closeDrawer(lvNavList);
-        } else {
+        }else if(dlDrawer.isDrawerOpen(notice_drawer)){
+            dlDrawer.closeDrawer(notice_drawer);
+        }
+        else {
             super.onBackPressed();
         }
     }
@@ -100,13 +110,15 @@ public class FCSNSRoomActivity extends AppCompatActivity {
         lvNavList = (ListView)findViewById(R.id.lv_activity_main_nav_list);
         lvNavList.setAdapter(drawerAdapter);
 
+        noticeList = new ArrayList<noticeItem>();
+        drawerAdapter2 = new CustomDrawerAdapter2(this, R.layout.custom_drawer_item2, noticeList);
+        notice_drawer = (ListView)findViewById(R.id.notice_listview);
+        notice_drawer.setAdapter(drawerAdapter2);
+
 
 
 
         view1 = (ImageView)findViewById(R.id.animation_view);
-//        view1.setBackgroundResource(R.drawable.animation_bg);
-//        animation = (AnimationDrawable) view1.getBackground();
-//        animation.start();
 
         ArrayAdapter<String> ad = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,state);
         ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -117,13 +129,14 @@ public class FCSNSRoomActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String str_state = spin1.getSelectedItem().toString();
                 if (str_state.equals("운동중")) {
-                    BitmapDrawable img_state = (BitmapDrawable) getResources().getDrawable(R.drawable.busy);
+                    BitmapDrawable img_state = (BitmapDrawable) getResources().getDrawable(R.drawable.status_dad_head_busy);
+                    spin1.getResources().getDrawable(R.drawable.status_panel_busy);
                     img.setImageDrawable(img_state);
                 } else if (str_state.equals("회의중")) {
-                    BitmapDrawable img_state = (BitmapDrawable) getResources().getDrawable(R.drawable.play);
+                    BitmapDrawable img_state = (BitmapDrawable) getResources().getDrawable(R.drawable.status_dad_head_busy);
                     img.setImageDrawable(img_state);
                 } else if (str_state.equals("이동중")) {
-                    BitmapDrawable img_state = (BitmapDrawable) getResources().getDrawable(R.drawable.sleep);
+                    BitmapDrawable img_state = (BitmapDrawable) getResources().getDrawable(R.drawable.status_dad_head_busy);
                     img.setImageDrawable(img_state);
                 }
             }
@@ -166,22 +179,24 @@ public class FCSNSRoomActivity extends AppCompatActivity {
                 if(v.getId() == R.id.button){
                     if (editText.getText().length() != 0) {
                         bg_cnt = 0;
-                        if(chat_bubble == 1){
+                        if(chat_bubble == 1){// 내가 전송시
                             adapter.addItem(getResources().getDrawable(R.drawable.status_mom_head), editText.getText().toString(), 1);
                             bg_type = true;
                             chat_bubble = 2;
                         }
 
-                        else if (chat_bubble == 2){
+                        else if (chat_bubble == 2){//상대방이 전송시
                             adapter.addItem(getResources().getDrawable(R.drawable.status_dad_head), editText.getText().toString(), 2);
                             bg_type = true;
                             chat_bubble = 3;
                         }
-                        else if (chat_bubble == 3){
+                        else if (chat_bubble == 3){//밝은 화면 공지
                             adapter.addItem(getResources().getDrawable(R.drawable.icon_512), editText.getText().toString(), 3);
+                           // final ListViewAdapter listViewAdapter = FCSNSAppManager.getInstance().getListViewAdapter();
+
                             chat_bubble = 4;
                         }
-                        else if (chat_bubble == 4){
+                        else if (chat_bubble == 4){//어두운 화면 공지
                             adapter.addItem(getResources().getDrawable(R.drawable.icon_512), editText.getText().toString(), 4);
                             chat_bubble = 1;
 
@@ -472,8 +487,8 @@ public class FCSNSRoomActivity extends AppCompatActivity {
 
         switch (id){
             case R.id.Hello_world: // "저장" == item.getTitle()
-                Toast.makeText(getApplicationContext(),"open",Toast.LENGTH_SHORT).show();
-
+                Toast.makeText(getApplicationContext(),"추후 개발",Toast.LENGTH_SHORT).show();
+                dlDrawer.openDrawer(notice_drawer);
                 return true;
 
             case R.id.file:

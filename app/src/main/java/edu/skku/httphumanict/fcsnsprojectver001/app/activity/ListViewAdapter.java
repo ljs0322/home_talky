@@ -25,13 +25,10 @@ import edu.skku.httphumanict.fcsnsprojectver001.app.FCSNSAppManager;
  * Created by say on 2016-08-11.
  */
 public class ListViewAdapter extends BaseAdapter {
-    public boolean emoticon_value = false;
-    //final static FCSNSRoomActivity mainActivity = new FCSNSRoomActivity();
 
     private ArrayList<ListViewItem> listViewItemList = new ArrayList<ListViewItem>();
 
-
-    public ListViewAdapter(){
+       public ListViewAdapter(){
 
     }
 
@@ -52,8 +49,9 @@ public class ListViewAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
+        FCSNSAppManager.getInstance().setListViewAdapter(this);
         final Context context = parent.getContext();
+        final FCSNSRoomActivity roomActivity = FCSNSAppManager.getInstance().getRoomActivity();
 
         if(convertView == null){
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -113,6 +111,8 @@ public class ListViewAdapter extends BaseAdapter {
             chatMessageContainer4.setVisibility(View.VISIBLE);
             chatMessageContainer5.setVisibility(View.INVISIBLE);
             chatMessageContainer6.setVisibility(View.INVISIBLE);
+            roomActivity.noticeList.add(new noticeItem(msgTextView2.getText().toString()));
+            roomActivity.drawerAdapter2.notifyDataSetChanged();
         }
         else if(listViewItem.isMyMsg() == 4){
             msgTextView2.setBackgroundResource(R.drawable.n_talk); // 어두운 배경 공지

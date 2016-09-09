@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.SlidingDrawer;
 
 import edu.skku.httphumanict.fcsnsprojectver001.R;
+import edu.skku.httphumanict.fcsnsprojectver001.app.FCSNSAppManager;
 
 /**
  *
@@ -19,5 +20,6 @@ public class FCSNSNoticeActivity extends AppCompatActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notice);
+
     }
 }// end of class

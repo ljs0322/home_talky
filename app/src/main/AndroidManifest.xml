@@ -21,8 +21,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".app.activity.FCSNSRoomActivity"
-            android:windowSoftInputMode="stateHidden"
-            >
+            android:windowSoftInputMode="adjustPan"
+            android:hardwareAccelerated="true">
         </activity>
         <activity android:name=".app.activity.FCSNSNoticeActivity" android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <activity android:name=".app.activity.FCSNSSaveActivity"  android:theme="@style/Theme.AppCompat.NoActionBar"/>
